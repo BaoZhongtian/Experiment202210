@@ -284,6 +284,9 @@ class MT5StackForMultiRoad_StackAttentionType(T5Stack):
                     output_attentions=output_attentions,
                 )
 
+            for sample in layer_outputs:
+                print(numpy.shape(sample))
+
             # layer_outputs is a tuple with:
             # hidden-states, key-value-states, (self-attention position bias), (self-attention weights), (cross-attention position bias), (cross-attention weights)
             if use_cache is False:
@@ -305,12 +308,6 @@ class MT5StackForMultiRoad_StackAttentionType(T5Stack):
                 all_attentions = all_attentions + (layer_outputs[3],)
                 if self.is_decoder:
                     all_cross_attentions = all_cross_attentions + (layer_outputs[5],)
-
-            # Model Parallel: If it's the last layer for that device, put things on the next device
-            if self.model_parallel:
-                for k, v in self.device_map.items():
-                    if i == v[-1] and "cuda:" + str(k) != self.last_device:
-                        hidden_states = hidden_states.to("cuda:" + str(k + 1))
 
         hidden_states = self.final_layer_norm(hidden_states)
         hidden_states = self.dropout(hidden_states)

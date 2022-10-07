@@ -3,7 +3,7 @@ import os
 import torch
 import numpy
 import datetime
-from Tools import ProgressBar, InputIDs_Treatment_Batch,InputIDs_Treatment_MultiRoad
+from Tools import ProgressBar, InputIDs_Treatment_Batch, InputIDs_Treatment_MultiRoad
 from Loader import Loader_WikiMulti_Raw, ArrangeData, ArrangeData_MultiLingualMatch_AllSeparate
 from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 from Model.MT5ForMultiRoad_StackAttentionType import MT5ForMultiRoad_StackAttentionType
@@ -18,11 +18,7 @@ if __name__ == '__main__':
 
     tokenizer = MT5Tokenizer.from_pretrained('C:/PythonProject/mt5_small/')
     model = MT5ForMultiRoad_StackAttentionType.from_pretrained(
-        'C:/PythonProject/WikiMultiExperiment/mT5_Small_Batch/checkpoint-step-500000/')
-
-    save_path = 'C:/PythonProject/mT5_Small_Batch/step-500000-Result/'
-    if not os.path.exists(save_path): os.makedirs(save_path)
-    ############################################
+        'C:/PythonProject/mT5_Small_Batch/checkpoint-step-500000/')
 
     if cuda_flag: model = model.cuda()
 
